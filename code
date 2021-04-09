@@ -1,0 +1,45 @@
+import { createTransport } from 'nodemailer';
+const puppeteer =  ("puppeteer");
+
+(async () => {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.goto(" ");                                 //path selection to the desired document
+    await page.pdf({ path: " ", format: "Letter" });      //the path itself should be considered the document itself.
+    
+    await browser.close();
+})();
+
+const transporter = createTransport({
+    host: " ",                                            // 'Company || Personal' Mail Server input
+    port: ,   
+    auth: {
+        user: ' ',  //process.env.USERNAME                //both username & password
+        pass: ' ' //process.env.PASSWORD                  //can be written in code or 
+    },                                                    //called from within a sepereate .env file
+    tls: {
+        rejectUnauthorized: false,
+        ciphers: 'SSLv3'
+    },
+    requireTLS: true,
+    debug: true,
+    logger: true
+});
+
+let mailOptions = {
+    from: 'sender@email.com',
+    to: 'recepient@email.com',
+    subject: 'subject of email',
+    text: 'body of the email',
+    attachments: [
+        {filename: 'item.pdf', path: 'item.pdf' }         //To ensure complete delivery,
+    ]                                                     //it seemed best to name both items the same
+};                                                      
+
+transporter.sendMail(mailOptions, function(err, data){
+    if(err){
+        console.log('Error', err);
+    } else{
+        console.log('Email Sent')
+    }
+}); 
